@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="920.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <VBox fx:id="startVBox" layoutX="-2.0" prefHeight="700.0" prefWidth="920.0">
+         <children>
+            <HBox prefHeight="50.0" prefWidth="920.0" spacing="10.0">
+               <children>
+                  <SplitMenuButton mnemonicParsing="false" text="Shape">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#drawRectangle" text="Rectange" />
+                      <MenuItem mnemonicParsing="false" text="Circle" />
+                    </items>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </SplitMenuButton>
+                  <Button fx:id="brush" mnemonicParsing="false" text="Brush">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+                  <ColorPicker fx:id="colorpicker" prefHeight="26.0" prefWidth="89.0" />
+                  <Label prefHeight="24.0" prefWidth="54.0" text="Brush Size" />
+                  <TextField fx:id="bsize" prefHeight="26.0" prefWidth="54.0" text="10" />
+                  <Button fx:id="newCanvas" mnemonicParsing="false" onAction="#newCanvas" text="New Canvas" />
+                  <Button fx:id="buttonSave" mnemonicParsing="false" text="Save As" />
+               </children>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+      <Canvas fx:id="canvas" height="641.0" layoutX="15.0" layoutY="49.0" opacity="0.56" width="886.0" />
+   </children>
+</Pane>
