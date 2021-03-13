@@ -5,8 +5,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -18,18 +16,9 @@
          <children>
             <HBox prefHeight="50.0" prefWidth="920.0" spacing="10.0">
                <children>
-                  <SplitMenuButton mnemonicParsing="false" text="Shape">
-                    <items>
-                      <MenuItem mnemonicParsing="false" onAction="#drawRectangle" text="Rectange" />
-                      <MenuItem mnemonicParsing="false" text="Circle" />
-                    </items>
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </SplitMenuButton>
                   <Button fx:id="brush" mnemonicParsing="false" text="Brush">
                      <HBox.margin>
-                        <Insets />
+                        <Insets left="10.0" />
                      </HBox.margin>
                   </Button>
                   <ColorPicker fx:id="colorpicker" prefHeight="26.0" prefWidth="89.0" />

@@ -6,16 +6,20 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.CheckBox;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -44,8 +48,12 @@ public class Controller implements Initializable {
     @FXML
     private Button brush;
 
+    @FXML
+    private ContextMenu menu;
+
     boolean toolSelected = false;
     boolean eraseSelected = false;
+    private int x1=100,y1=100;
 
     GraphicsContext brushTool;
 
@@ -68,6 +76,103 @@ public class Controller implements Initializable {
                 brushTool.setFill(colorpicker.getValue());
                 brushTool.fillRoundRect(x,y,size,size,size,size);
             }
+        });
+
+        //Canvas right click context menu for shapes
+        menu = new ContextMenu();
+        MenuItem item1 = new MenuItem("Rectangle");
+        item1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                TextField cWidth = new TextField();
+                cWidth.setPromptText("Width");
+                cWidth.setAlignment(Pos.CENTER);
+
+                TextField cHeight = new TextField();
+                cHeight.setPromptText("Height");
+                cHeight.setAlignment(Pos.CENTER);
+
+                CheckBox checkbox = new CheckBox("Fill shape");
+
+                Button createButton = new Button();
+                createButton.setText("OK");
+
+                VBox vBox = new VBox();
+                vBox.getChildren().addAll(cWidth,cHeight,checkbox,createButton);
+                vBox.setPrefHeight(200);
+                vBox.setPrefWidth(300);
+                vBox.setSpacing(5);
+                vBox.setAlignment(Pos.CENTER);
+
+                Stage createStage = new Stage();
+                AnchorPane root = new AnchorPane();
+                root.getChildren().add(vBox);
+
+                Scene canvasScene = new Scene(root);
+                createStage.setTitle("Create Rectangle");
+                createStage.setScene(canvasScene);
+                createStage.show();
+
+                createButton.setOnAction(actionEvent1 -> {
+                    boolean filled = checkbox.isSelected();
+                    Rectangle rect = new Rectangle();
+                    rect.setX(x1);
+                    rect.setY(y1);
+                    rect.setWidth((int)Double.parseDouble(cWidth.getText()));
+                    rect.setHeight((int)Double.parseDouble(cHeight.getText()));
+                    drawRect(rect,filled);
+                    createStage.close();
+                });
+            }
+        });
+
+        menu = new ContextMenu();
+        MenuItem item2 = new MenuItem("Circle");
+        item2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                TextField radius = new TextField();
+                radius.setPromptText("Radius");
+                radius.setAlignment(Pos.CENTER);
+
+                CheckBox checkbox = new CheckBox("Fill shape");
+
+                Button createButton = new Button();
+                createButton.setText("OK");
+
+                VBox vBox = new VBox();
+                vBox.getChildren().addAll(radius,checkbox,createButton);
+                vBox.setPrefHeight(150);
+                vBox.setPrefWidth(200);
+                vBox.setSpacing(5);
+                vBox.setAlignment(Pos.CENTER);
+
+                Stage createStage = new Stage();
+                AnchorPane root = new AnchorPane();
+                root.getChildren().add(vBox);
+
+                Scene canvasScene = new Scene(root);
+                createStage.setTitle("Create Circle");
+                createStage.setScene(canvasScene);
+                createStage.show();
+
+                createButton.setOnAction(actionEvent1 -> {
+                    boolean filled = checkbox.isSelected();
+                    Circle circ = new Circle();
+                    circ.setCenterX(x1);
+                    circ.setCenterY(y1);
+                    circ.setRadius((int)Double.parseDouble(radius.getText()));
+                    drawCirc(circ,filled);
+                    createStage.close();
+                });
+            }
+        });
+        
+        menu.getItems().addAll(item1, item2);
+        canvas.setOnContextMenuRequested(e -> {
+            x1=(int)e.getSceneX()-15;
+            y1=(int)e.getSceneY()-45;
+            menu.show(canvas, e.getScreenX(), e.getScreenY());
         });
 
         brush.setOnMouseClicked(e->{
@@ -154,25 +259,32 @@ public class Controller implements Initializable {
             createStage.close();
         });
     }
-
-    @FXML
-    private void drawRect(Rectangle rect){
-        brushTool.setFill(Color.WHITESMOKE);
-        brushTool.fillRect(rect.getX(),
-                rect.getY(),
-                rect.getWidth(),
-                rect.getHeight());
-        brushTool.setFill(Color.GREEN);
-        brushTool.setStroke(Color.BLUE);
+    
+    private void drawRect(Rectangle rect,boolean filled){
+        if(filled) {
+            brushTool.setFill(colorpicker.getValue());
+            brushTool.fillRect(rect.getX(),
+                    rect.getY(),
+                    rect.getWidth(),
+                    rect.getHeight());
+        }
+        else {
+            brushTool.setStroke(colorpicker.getValue());
+            brushTool.strokeRect(rect.getX(),
+                    rect.getY(),
+                    rect.getWidth(),
+                    rect.getHeight());
+        }
     }
 
-
-    public void drawRectangle(ActionEvent actionEvent) {
-        Rectangle rect = new Rectangle();
-        rect.setX(50);
-        rect.setY(50);
-        rect.setWidth(10);
-        rect.setHeight(10);
-        drawRect(rect);
+    private void drawCirc(Circle circ,boolean filled){
+        if(!filled) {
+            brushTool.setStroke(colorpicker.getValue());
+            brushTool.strokeOval(circ.getCenterX() - circ.getRadius(), circ.getCenterY() - circ.getRadius(), circ.getRadius() * 2, circ.getRadius() * 2);
+        }
+        else {
+            brushTool.setFill(colorpicker.getValue());
+            brushTool.fillOval(circ.getCenterX() - circ.getRadius(), circ.getCenterY() - circ.getRadius(), circ.getRadius() * 2, circ.getRadius() * 2);
+        }
     }
 }
