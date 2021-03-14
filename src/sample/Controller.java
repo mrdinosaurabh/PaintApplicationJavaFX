@@ -37,6 +37,8 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
     @FXML
+    private Slider slider;
+    @FXML
     private Button buttonSave;
     @FXML
     private ColorPicker colorpicker;
@@ -67,7 +69,13 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         brushTool = canvas.getGraphicsContext2D();
+
         canvas.setOnMouseDragged(e->{
+            double r = colorpicker.getValue().getRed();
+            double b = colorpicker.getValue().getBlue();
+            double g = colorpicker.getValue().getGreen();
+            Color color = new Color(r,g,b,(slider.getValue()*1.0)/100.0);
+            brushTool.setFill(color);
 
             double size;
             if(bsize.getText().trim().isEmpty())
@@ -80,7 +88,6 @@ public class Controller implements Initializable {
                 brushTool.clearRect(x, y, size, size);
             }
             else if(toolSelected && !bsize.getText().trim().isEmpty()) {
-                brushTool.setFill(colorpicker.getValue());
                 brushTool.fillRoundRect(x,y,size,size,size,size);
             }
         });

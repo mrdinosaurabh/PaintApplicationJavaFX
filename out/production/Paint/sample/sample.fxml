@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -21,11 +22,22 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Button>
-                  <ColorPicker fx:id="colorpicker" prefHeight="26.0" prefWidth="89.0" />
                   <Label prefHeight="24.0" prefWidth="54.0" text="Brush Size" />
                   <TextField fx:id="bsize" prefHeight="26.0" prefWidth="54.0" text="10" />
+                  <ColorPicker fx:id="colorpicker" prefHeight="26.0" prefWidth="89.0" />
+                  <Label text="Opacity">
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Slider fx:id="slider" blockIncrement="2.0" showTickLabels="true" value="50.0">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Slider>
                   <Button fx:id="newCanvas" mnemonicParsing="false" onAction="#newCanvas" text="New Canvas" />
                   <Button fx:id="buttonSave" mnemonicParsing="false" text="Save As" />
+                  <Button mnemonicParsing="false" text="Text" />
                </children>
                <padding>
                   <Insets top="10.0" />
