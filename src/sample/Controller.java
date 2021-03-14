@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,10 +23,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
+//import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +54,9 @@ public class Controller implements Initializable {
 
     @FXML
     private ContextMenu menu;
+
+    //java.util.List<String> fontFamilies = Font.getFamilies();
+    ObservableList<String> fontNames    = FXCollections.observableArrayList(Font.getFontNames());
 
     boolean toolSelected = false;
     boolean eraseSelected = false;
@@ -126,7 +133,6 @@ public class Controller implements Initializable {
             }
         });
 
-        menu = new ContextMenu();
         MenuItem item2 = new MenuItem("Circle");
         item2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -167,8 +173,55 @@ public class Controller implements Initializable {
                 });
             }
         });
-        
-        menu.getItems().addAll(item1, item2);
+
+        MenuItem item3 = new MenuItem("Text");
+        item3.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                TextField text = new TextField();
+                text.setPromptText("Text here");
+                text.setAlignment(Pos.CENTER);
+
+                ComboBox comboBox = new ComboBox();
+                comboBox.setItems(fontNames);
+                comboBox.setValue("Agency FB");
+
+                Spinner spinner = new Spinner();
+                spinner.setEditable(true);
+                spinner.setPromptText("Font size");
+                SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1);
+                spinner.setValueFactory(valueFactory);
+
+
+                CheckBox checkbox = new CheckBox("Fill Text");
+
+                Button createButton = new Button();
+                createButton.setText("OK");
+
+                VBox vBox = new VBox();
+                vBox.getChildren().addAll(text,comboBox,spinner,checkbox,createButton);
+                vBox.setPrefHeight(150);
+                vBox.setPrefWidth(200);
+                vBox.setSpacing(5);
+                vBox.setAlignment(Pos.CENTER);
+
+                Stage createStage = new Stage();
+                AnchorPane root = new AnchorPane();
+                root.getChildren().add(vBox);
+
+                Scene canvasScene = new Scene(root);
+                createStage.setTitle("Create Text");
+                createStage.setScene(canvasScene);
+                createStage.show();
+
+                createButton.setOnAction(actionEvent1 -> {
+                    drawText(text.getText(),checkbox.isSelected(),new Font(comboBox.getValue().toString(),Integer.parseInt(spinner.getValue().toString())));
+                    createStage.close();
+                });
+            }
+        });
+
+        menu.getItems().addAll(item1, item2,item3);
         canvas.setOnContextMenuRequested(e -> {
             x1=(int)e.getSceneX()-15;
             y1=(int)e.getSceneY()-45;
@@ -287,4 +340,17 @@ public class Controller implements Initializable {
             brushTool.fillOval(circ.getCenterX() - circ.getRadius(), circ.getCenterY() - circ.getRadius(), circ.getRadius() * 2, circ.getRadius() * 2);
         }
     }
+
+    private void drawText(String text,boolean filled, Font font){
+        brushTool.setFont(font);
+        if(!filled) {
+            brushTool.setStroke(colorpicker.getValue());
+            brushTool.strokeText(text,x1,y1);
+        }
+        else {
+            brushTool.setFill(colorpicker.getValue());
+            brushTool.fillText(text,x1,y1);
+        }
+    }
+
 }
