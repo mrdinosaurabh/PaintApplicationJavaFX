@@ -1,0 +1,41 @@
+.button {
+    -fx-font-size  : 10pt;
+    -fx-font-family: "Tahoma";
+    -fx-font-color: #FFFFFF;
+    -fx-text-fill: white;
+    -fx-base       : #dfe5f2;
+    -fx-focus-color: #dfe5f2;
+    -fx-background-color:  linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+.label {
+    -fx-text-fill: white;
+}
+
+#colorpicker {
+        -fx-font-size  : 10pt;
+        -fx-font-family: "Tahoma";
+        -fx-font-color: #FFFFFF;
+        -fx-text-fill: white;
+        -fx-base       : #dfe5f2;
+        -fx-focus-color: #dfe5f2;
+        -fx-background-color:  linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+
+.slider {
+-fx-font-size  : 10pt;
+    -fx-font-family: "Tahoma";
+    -fx-font-color: #FFFFFF;
+    -fx-text-fill: white;
+    -fx-base       : #dfe5f2;
+    -fx-focus-color: #dfe5f2;
+    -fx-background-color:  linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+.root {
+     -fx-font-size  : 10pt;
+     -fx-font-family: "Tahoma";
+     -fx-text-fill: white;
+     -fx-font-color: #FFFFFF;
+     -fx-base       : #FFFFFF;
+     -fx-focus-color: #FFFFFF;
+     -fx-background-color:  linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}

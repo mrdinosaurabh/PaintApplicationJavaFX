@@ -17,8 +17,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -34,8 +36,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.scene.image.Image;
 
 public class Controller implements Initializable {
+    @FXML
+    private Pane pane;
+    @FXML
+    private Button mode;
     @FXML
     private Slider slider;
     @FXML
@@ -50,7 +57,8 @@ public class Controller implements Initializable {
     private Button newCanvas;
     @FXML
     private VBox startVBox;
-
+    @FXML
+    private Button open;
     @FXML
     private Button brush;
 
@@ -62,6 +70,7 @@ public class Controller implements Initializable {
 
     boolean toolSelected = false;
     boolean eraseSelected = false;
+    boolean skyMode = true;
     private int x1=100,y1=100;
 
     GraphicsContext brushTool;
@@ -69,7 +78,8 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         brushTool = canvas.getGraphicsContext2D();
-
+        brushTool.setFill(colorpicker.getValue());
+        brushTool.fillRect(0,0,886,641);
         canvas.setOnMouseDragged(e->{
             double r = colorpicker.getValue().getRed();
             double b = colorpicker.getValue().getBlue();
@@ -85,9 +95,11 @@ public class Controller implements Initializable {
             double y = e.getY()-size;
 
             if(eraseSelected && !bsize.getText().trim().isEmpty()) {
-                brushTool.clearRect(x, y, size, size);
+                brushTool.setFill(Color.WHITE);
+                brushTool.fillRect(x, y, size, size);
             }
             else if(toolSelected && !bsize.getText().trim().isEmpty()) {
+                brushTool.setFill(colorpicker.getValue());
                 brushTool.fillRoundRect(x,y,size,size,size,size);
             }
         });
@@ -107,6 +119,8 @@ public class Controller implements Initializable {
                 cHeight.setAlignment(Pos.CENTER);
 
                 CheckBox checkbox = new CheckBox("Fill shape");
+                if(!skyMode)
+                    checkbox.setStyle("-fx-text-fill:white;");
 
                 Button createButton = new Button();
                 createButton.setText("OK");
@@ -120,6 +134,16 @@ public class Controller implements Initializable {
 
                 Stage createStage = new Stage();
                 AnchorPane root = new AnchorPane();
+                if(skyMode) {
+                    mode.setText("Dark Mode");
+                    root.getStylesheets().remove(getClass().getResource("stylesDark.css").toExternalForm());
+                    root.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+                }
+                else {
+                    mode.setText("Light Mode");
+                    root.getStylesheets().remove(getClass().getResource("styles.css").toExternalForm());
+                    root.getStylesheets().add(getClass().getResource("stylesDark.css").toExternalForm());
+                }
                 root.getChildren().add(vBox);
 
                 Scene canvasScene = new Scene(root);
@@ -149,7 +173,8 @@ public class Controller implements Initializable {
                 radius.setAlignment(Pos.CENTER);
 
                 CheckBox checkbox = new CheckBox("Fill shape");
-
+                if(!skyMode)
+                    checkbox.setStyle("-fx-text-fill:white;");
                 Button createButton = new Button();
                 createButton.setText("OK");
 
@@ -162,6 +187,16 @@ public class Controller implements Initializable {
 
                 Stage createStage = new Stage();
                 AnchorPane root = new AnchorPane();
+                if(skyMode) {
+                    mode.setText("Dark Mode");
+                    root.getStylesheets().remove(getClass().getResource("stylesDark.css").toExternalForm());
+                    root.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+                }
+                else {
+                    mode.setText("Light Mode");
+                    root.getStylesheets().remove(getClass().getResource("styles.css").toExternalForm());
+                    root.getStylesheets().add(getClass().getResource("stylesDark.css").toExternalForm());
+                }
                 root.getChildren().add(vBox);
 
                 Scene canvasScene = new Scene(root);
@@ -201,7 +236,8 @@ public class Controller implements Initializable {
 
 
                 CheckBox checkbox = new CheckBox("Fill Text");
-
+                if(!skyMode)
+                    checkbox.setStyle("-fx-text-fill:white;");
                 Button createButton = new Button();
                 createButton.setText("OK");
 
@@ -214,6 +250,16 @@ public class Controller implements Initializable {
 
                 Stage createStage = new Stage();
                 AnchorPane root = new AnchorPane();
+                if(skyMode) {
+                    mode.setText("Dark Mode");
+                    root.getStylesheets().remove(getClass().getResource("stylesDark.css").toExternalForm());
+                    root.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+                }
+                else {
+                    mode.setText("Light Mode");
+                    root.getStylesheets().remove(getClass().getResource("styles.css").toExternalForm());
+                    root.getStylesheets().add(getClass().getResource("stylesDark.css").toExternalForm());
+                }
                 root.getChildren().add(vBox);
 
                 Scene canvasScene = new Scene(root);
@@ -247,6 +293,28 @@ public class Controller implements Initializable {
                 eraseSelected = false;
             }
         });
+        open.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent t) {
+                FileChooser fileChooser = new FileChooser();
+                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+                fileChooser.getExtensionFilters().add(extFilter);
+                File file = fileChooser.showOpenDialog(Main.primaryStage);
+
+                if(file != null){
+                    try {
+                        System.out.println(file.getPath());
+                        String imagepath = file.toURI().toURL().toString();
+                        Image image = new Image(imagepath);
+                        brushTool.drawImage(image,0,0,Math.min(canvas.getWidth(),image.getWidth()),Math.min(image.getHeight(),canvas.getHeight()));
+                        //brushTool.drawImage(image,0,0,image.getWidth(),image.getHeight());
+                        //brushTool.drawImage(image,0,0,Math.min(canvas.getWidth(),image.getWidth()),Math.min(canvas.getHeight(),image.getHeight()));
+                    } catch (Exception ex) {
+                        System.out.println("Galat: "+ ex.getMessage());
+                    }
+                }
+            }
+            });
 
         buttonSave.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -311,11 +379,17 @@ public class Controller implements Initializable {
             double canvasHeight = Double.parseDouble(cHeight.getText());
             brushTool.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
             startVBox.getChildren().remove(canvas);
+
             canvas=new Canvas(canvasWidth,canvasHeight);
-            Main.primaryStage.setWidth(Math.max(canvasWidth,500));
-            Main.primaryStage.setHeight(Math.max(canvasHeight,500));
+            Main.primaryStage.setWidth(Math.max(canvasWidth+50,850));
+            Main.primaryStage.setHeight(canvasHeight+50);
+
             startVBox.getChildren().add(canvas);
             brushTool = canvas.getGraphicsContext2D();
+            brushTool.setFill(Color.WHITE);
+            brushTool.fillRect(0, 0, canvasWidth, canvasHeight);
+            brushTool.setFill(colorpicker.getValue());
+
             createStage.close();
         });
     }
@@ -360,4 +434,18 @@ public class Controller implements Initializable {
         }
     }
 
+    @FXML
+    private void modeClicked(javafx.event.ActionEvent actionEvent) {
+        skyMode = (!skyMode);
+        if(skyMode) {
+            mode.setText("Dark Mode");
+            pane.getStylesheets().remove(getClass().getResource("stylesDark.css").toExternalForm());
+            pane.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        }
+        else {
+            mode.setText("Light Mode");
+            pane.getStylesheets().remove(getClass().getResource("styles.css").toExternalForm());
+            pane.getStylesheets().add(getClass().getResource("stylesDark.css").toExternalForm());
+        }
+    }
 }

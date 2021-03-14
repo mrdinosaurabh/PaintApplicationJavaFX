@@ -11,18 +11,25 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="920.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
-   <children>
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="920.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+  <children>
       <VBox fx:id="startVBox" layoutX="-2.0" prefHeight="700.0" prefWidth="920.0">
          <children>
-            <HBox prefHeight="50.0" prefWidth="920.0" spacing="10.0">
+            <HBox prefHeight="58.0" prefWidth="926.0" spacing="10.0">
                <children>
+                  <Button fx:id="open" mnemonicParsing="false" text="Open">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="newCanvas" mnemonicParsing="false" onAction="#newCanvas" text="New Canvas" />
+                  <Button fx:id="buttonSave" mnemonicParsing="false" text="Save As" />
                   <Button fx:id="brush" mnemonicParsing="false" text="Brush">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Label prefHeight="24.0" prefWidth="54.0" text="Brush Size" />
+                  <Label prefHeight="27.0" prefWidth="68.0" text="Brush Size" />
                   <TextField fx:id="bsize" prefHeight="26.0" prefWidth="54.0" text="10" />
                   <ColorPicker fx:id="colorpicker" prefHeight="26.0" prefWidth="89.0" />
                   <Label text="Opacity">
@@ -30,21 +37,25 @@
                         <Insets top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <Slider fx:id="slider" blockIncrement="2.0" showTickLabels="true" value="50.0">
+                  <Slider fx:id="slider" blockIncrement="2.0" showTickLabels="true" value="100.0">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </Slider>
-                  <Button fx:id="newCanvas" mnemonicParsing="false" onAction="#newCanvas" text="New Canvas" />
-                  <Button fx:id="buttonSave" mnemonicParsing="false" text="Save As" />
-                  <Button mnemonicParsing="false" text="Text" />
+                  <Button fx:id="mode" mnemonicParsing="false" onAction="#modeClicked" text="Dark Mode" />
                </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
                <padding>
-                  <Insets top="10.0" />
+                  <Insets top="15.0" />
                </padding>
             </HBox>
          </children>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
       </VBox>
-      <Canvas fx:id="canvas" height="641.0" layoutX="15.0" layoutY="49.0" opacity="0.56" width="886.0" />
+      <Canvas fx:id="canvas" height="634.0" layoutX="15.0" layoutY="56.0" width="886.0" />
    </children>
 </Pane>
