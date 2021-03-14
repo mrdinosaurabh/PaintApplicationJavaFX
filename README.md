@@ -3,9 +3,14 @@ Basic painting application made using JavaFX.
 Teammate: Ms. Vineeta Singh
 
 It has the following features:
-1) Choose brush color and size
-2) Choose erase and its size
-3) Create a new canvas with specified size
-4) Right click on canvas and add shapes and fill them or stroke them (Circle, Rectangle, etc)
-5) Right click on canvas and add Text with specified font and size
-6) Save your painting as a .png file 
+1) Light Mode and Dark Mode, switch between them effortlessly
+2) Choose brush color,opacity and size
+3) Choose erase and its size
+4) Create a new canvas with specified size
+5) Right click on canvas and add shapes and fill them or stroke them (Circle, Rectangle, etc)
+6) Right click on canvas and add Text with specified font and size
+7) Save your painting as a .png file 
+8) Open a .png file on your canvas
+
+To run the project:
+1) Run Main.java
