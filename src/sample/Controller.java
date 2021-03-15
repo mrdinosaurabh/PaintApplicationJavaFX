@@ -81,10 +81,7 @@ public class Controller implements Initializable {
         brushTool.setFill(colorpicker.getValue());
         brushTool.fillRect(0,0,886,641);
         canvas.setOnMouseDragged(e->{
-            double r = colorpicker.getValue().getRed();
-            double b = colorpicker.getValue().getBlue();
-            double g = colorpicker.getValue().getGreen();
-            Color color = new Color(r,g,b,(slider.getValue()*1.0)/100.0);
+            Color color = new Color(colorpicker.getValue().getRed(),colorpicker.getValue().getGreen(),colorpicker.getValue().getBlue(),(slider.getValue()*1.0)/100.0);
             brushTool.setFill(color);
 
             double size;
@@ -96,10 +93,10 @@ public class Controller implements Initializable {
 
             if(eraseSelected && !bsize.getText().trim().isEmpty()) {
                 brushTool.setFill(Color.WHITE);
-                brushTool.fillRect(x, y, size, size);
+                brushTool.clearRect(x, y, size, size);
             }
             else if(toolSelected && !bsize.getText().trim().isEmpty()) {
-                brushTool.setFill(colorpicker.getValue());
+                brushTool.setFill(new Color(colorpicker.getValue().getRed(),colorpicker.getValue().getGreen(),colorpicker.getValue().getBlue(),(slider.getValue()*1.0)/100.0));
                 brushTool.fillRoundRect(x,y,size,size,size,size);
             }
         });
@@ -297,13 +294,12 @@ public class Controller implements Initializable {
             @Override
             public void handle(ActionEvent t) {
                 FileChooser fileChooser = new FileChooser();
-                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image files (*.jpeg) (*.png) (*.jpg)","*.jpeg","*.jpg)","*.png");
                 fileChooser.getExtensionFilters().add(extFilter);
                 File file = fileChooser.showOpenDialog(Main.primaryStage);
 
                 if(file != null){
                     try {
-                        System.out.println(file.getPath());
                         String imagepath = file.toURI().toURL().toString();
                         Image image = new Image(imagepath);
                         brushTool.drawImage(image,0,0,Math.min(canvas.getWidth(),image.getWidth()),Math.min(image.getHeight(),canvas.getHeight()));
@@ -324,7 +320,7 @@ public class Controller implements Initializable {
 
                 //Set extension filter
                 FileChooser.ExtensionFilter extFilter =
-                        new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+                        new FileChooser.ExtensionFilter("Image files (*.jpeg) (*.png) (*.jpg)","*.jpeg","*.jpg)","*.png");
                 fileChooser.getExtensionFilters().add(extFilter);
 
                 //Show save file dialog
@@ -396,14 +392,14 @@ public class Controller implements Initializable {
     
     private void drawRect(Rectangle rect,boolean filled){
         if(filled) {
-            brushTool.setFill(colorpicker.getValue());
+            brushTool.setFill(new Color(colorpicker.getValue().getRed(),colorpicker.getValue().getGreen(),colorpicker.getValue().getBlue(),(slider.getValue()*1.0)/100.0));
             brushTool.fillRect(rect.getX(),
                     rect.getY(),
                     rect.getWidth(),
                     rect.getHeight());
         }
         else {
-            brushTool.setStroke(colorpicker.getValue());
+            brushTool.setStroke(new Color(colorpicker.getValue().getRed(),colorpicker.getValue().getGreen(),colorpicker.getValue().getBlue(),(slider.getValue()*1.0)/100.0));
             brushTool.strokeRect(rect.getX(),
                     rect.getY(),
                     rect.getWidth(),
@@ -413,11 +409,11 @@ public class Controller implements Initializable {
 
     private void drawCirc(Circle circ,boolean filled){
         if(!filled) {
-            brushTool.setStroke(colorpicker.getValue());
+            brushTool.setStroke(new Color(colorpicker.getValue().getRed(),colorpicker.getValue().getGreen(),colorpicker.getValue().getBlue(),(slider.getValue()*1.0)/100.0));
             brushTool.strokeOval(circ.getCenterX() - circ.getRadius(), circ.getCenterY() - circ.getRadius(), circ.getRadius() * 2, circ.getRadius() * 2);
         }
         else {
-            brushTool.setFill(colorpicker.getValue());
+            brushTool.setFill(new Color(colorpicker.getValue().getRed(),colorpicker.getValue().getGreen(),colorpicker.getValue().getBlue(),(slider.getValue()*1.0)/100.0));
             brushTool.fillOval(circ.getCenterX() - circ.getRadius(), circ.getCenterY() - circ.getRadius(), circ.getRadius() * 2, circ.getRadius() * 2);
         }
     }
@@ -425,11 +421,11 @@ public class Controller implements Initializable {
     private void drawText(String text,boolean filled, Font font){
         brushTool.setFont(font);
         if(!filled) {
-            brushTool.setStroke(colorpicker.getValue());
+            brushTool.setStroke(new Color(colorpicker.getValue().getRed(),colorpicker.getValue().getGreen(),colorpicker.getValue().getBlue(),(slider.getValue()*1.0)/100.0));
             brushTool.strokeText(text,x1,y1);
         }
         else {
-            brushTool.setFill(colorpicker.getValue());
+            brushTool.setFill(new Color(colorpicker.getValue().getRed(),colorpicker.getValue().getGreen(),colorpicker.getValue().getBlue(),(slider.getValue()*1.0)/100.0));
             brushTool.fillText(text,x1,y1);
         }
     }
