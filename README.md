@@ -1,6 +1,8 @@
 # PaintApplicationJavaFX
-Basic painting application made using JavaFX. 
+Basic painting application made using JavaFX.
 Teammate: Ms. Vineeta Singh
+
+**To see how the project looks and its features, check "Screenshots" folder.**
 
 It has the following features:
 1) Light Mode and Dark Mode, switch between them effortlessly
