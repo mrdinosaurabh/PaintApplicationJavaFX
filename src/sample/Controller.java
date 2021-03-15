@@ -93,7 +93,7 @@ public class Controller implements Initializable {
 
             if(eraseSelected && !bsize.getText().trim().isEmpty()) {
                 brushTool.setFill(Color.WHITE);
-                brushTool.clearRect(x, y, size, size);
+                brushTool.fillRect(x, y, size, size);
             }
             else if(toolSelected && !bsize.getText().trim().isEmpty()) {
                 brushTool.setFill(new Color(colorpicker.getValue().getRed(),colorpicker.getValue().getGreen(),colorpicker.getValue().getBlue(),(slider.getValue()*1.0)/100.0));
@@ -377,8 +377,8 @@ public class Controller implements Initializable {
             startVBox.getChildren().remove(canvas);
 
             canvas=new Canvas(canvasWidth,canvasHeight);
-            Main.primaryStage.setWidth(Math.max(canvasWidth+50,850));
-            Main.primaryStage.setHeight(canvasHeight+50);
+            Main.primaryStage.setWidth(Math.max(canvasWidth+50,900));
+            Main.primaryStage.setHeight(canvasHeight+200);
 
             startVBox.getChildren().add(canvas);
             brushTool = canvas.getGraphicsContext2D();
